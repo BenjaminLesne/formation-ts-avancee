@@ -1,4 +1,4 @@
-import { pokemons } from "./pokemon.js";
+import { pokemons } from "./database.js";
 
 export function getAllPokemons() {
   return pokemons;

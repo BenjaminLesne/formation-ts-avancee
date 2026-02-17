@@ -1,4 +1,4 @@
-import type { OwnedPokemon, PokemonName } from "./pokemon.js";
+import type { OwnedPokemon, PokemonName } from "./database.js";
 
 const pokedex: OwnedPokemon[] = [];
 

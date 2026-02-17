@@ -1,4 +1,4 @@
-import type { PokemonName } from "./pokemon.js";
+import type { PokemonName } from "./database.js";
 import { getAllPokemons } from "./gateway.js";
 import { addPokemon, findByName, updatePokemon } from "./repository.js";
 
