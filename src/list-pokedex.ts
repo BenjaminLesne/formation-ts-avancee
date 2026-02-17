@@ -1,7 +1,7 @@
-import { getAllOwnedPokemons } from "./repository.js";
+import type { PokemonRepository } from "./repository.js";
 
-export function listPokedex() {
-  const owned = getAllOwnedPokemons();
+export function listPokedex(repository: PokemonRepository) {
+  const owned = repository.getAllOwnedPokemons();
 
   if (owned.length === 0) {
     return "Votre Pokédex est vide.";

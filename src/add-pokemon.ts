@@ -1,21 +1,28 @@
 import type { PokemonName } from "./database.js";
-import { getAllPokemons } from "./gateway.js";
-import { addPokemon, findByName, updatePokemon } from "./repository.js";
+import type { PokemonGateway } from "./gateway.js";
+import type { PokemonRepository } from "./repository.js";
 
-export function addPokemonToPokedex(name: PokemonName) {
-  const existing = findByName(name);
+export function addPokemonToPokedex(
+  name: PokemonName,
+  repository: PokemonRepository,
+  gateway: PokemonGateway,
+) {
+  const existing = repository.findByName(name);
 
   if (existing) {
-    updatePokemon(name, { ...existing, ownedLevel: existing.ownedLevel + 1 });
+    repository.updatePokemon(name, {
+      ...existing,
+      ownedLevel: existing.ownedLevel + 1,
+    });
     return `${name} est déjà dans le Pokédex ! Il passe au niveau ${existing.ownedLevel + 1}.`;
   }
 
-  const pokemon = getAllPokemons().find((p) => p.name === name);
+  const pokemon = gateway.getAllPokemons().find((p) => p.name === name);
 
   if (!pokemon) {
     return `${name} n'existe pas.`;
   }
 
-  addPokemon({ ...pokemon, ownedLevel: 1 });
+  repository.addPokemon({ ...pokemon, ownedLevel: 1 });
   return `${name} a été ajouté au Pokédex !`;
 }

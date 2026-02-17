@@ -1,5 +1,12 @@
+import type { Pokemon } from "./database.js";
 import { pokemons } from "./database.js";
 
-export function getAllPokemons() {
-  return pokemons;
+export interface PokemonGateway {
+  getAllPokemons(): readonly Pokemon[];
 }
+
+export const pokemonGateway: PokemonGateway = {
+  getAllPokemons() {
+    return pokemons;
+  },
+};

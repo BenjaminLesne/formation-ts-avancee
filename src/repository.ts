@@ -1,22 +1,33 @@
 import type { OwnedPokemon, PokemonName } from "./database.js";
 
-const pokedex: OwnedPokemon[] = [];
-
-export function addPokemon(pokemon: OwnedPokemon): void {
-  pokedex.push(pokemon);
+export interface PokemonRepository {
+  addPokemon(pokemon: OwnedPokemon): void;
+  getAllOwnedPokemons(): OwnedPokemon[];
+  findByName(name: PokemonName): OwnedPokemon | undefined;
+  updatePokemon(name: PokemonName, updated: OwnedPokemon): void;
 }
 
-export function getAllOwnedPokemons() {
-  return [...pokedex];
-}
+export function createPokemonRepository(): PokemonRepository {
+  const pokedex: OwnedPokemon[] = [];
 
-export function findByName(name: PokemonName) {
-  return pokedex.find((p) => p.name === name);
-}
+  return {
+    addPokemon(pokemon: OwnedPokemon): void {
+      pokedex.push(pokemon);
+    },
 
-export function updatePokemon(name: PokemonName, updated: OwnedPokemon): void {
-  const index = pokedex.findIndex((p) => p.name === name);
-  if (index !== -1) {
-    pokedex[index] = updated;
-  }
+    getAllOwnedPokemons() {
+      return [...pokedex];
+    },
+
+    findByName(name: PokemonName) {
+      return pokedex.find((p) => p.name === name);
+    },
+
+    updatePokemon(name: PokemonName, updated: OwnedPokemon): void {
+      const index = pokedex.findIndex((p) => p.name === name);
+      if (index !== -1) {
+        pokedex[index] = updated;
+      }
+    },
+  };
 }
