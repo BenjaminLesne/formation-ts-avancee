@@ -7,13 +7,13 @@ const fakeGateway: PokemonGateway = {
   getAllPokemons() {
     return [
       {
-        name: "Pikachu",
+        name: "Pikachu-Electric",
         type: "Electric",
         level: 25,
         stats: { hp: 35, attack: 55, defense: 40, speed: 90 },
       },
       {
-        name: "Dracaufeu",
+        name: "Dracaufeu-Fire",
         type: "Fire",
         level: 36,
         stats: { hp: 78, attack: 84, defense: 78, speed: 100 },
@@ -26,11 +26,15 @@ describe("addPokemonToPokedex", () => {
   it("ajoute un pokémon au pokédex", () => {
     const repository = createPokemonRepository();
 
-    const result = addPokemonToPokedex("Pikachu", repository, fakeGateway);
+    const result = addPokemonToPokedex(
+      "Pikachu-Electric",
+      repository,
+      fakeGateway,
+    );
 
-    expect(result).toBe("Pikachu a été ajouté au Pokédex !");
-    expect(repository.findByName("Pikachu")).toMatchObject({
-      name: "Pikachu",
+    expect(result).toBe("Pikachu-Electric a été ajouté au Pokédex !");
+    expect(repository.findByName("Pikachu-Electric")).toMatchObject({
+      name: "Pikachu-Electric",
       ownedLevel: 1,
     });
   });
@@ -38,13 +42,17 @@ describe("addPokemonToPokedex", () => {
   it("level up si le pokémon est déjà dans le pokédex", () => {
     const repository = createPokemonRepository();
 
-    addPokemonToPokedex("Pikachu", repository, fakeGateway);
-    const result = addPokemonToPokedex("Pikachu", repository, fakeGateway);
+    addPokemonToPokedex("Pikachu-Electric", repository, fakeGateway);
+    const result = addPokemonToPokedex(
+      "Pikachu-Electric",
+      repository,
+      fakeGateway,
+    );
 
     expect(result).toBe(
-      "Pikachu est déjà dans le Pokédex ! Il passe au niveau 2.",
+      "Pikachu-Electric est déjà dans le Pokédex ! Il passe au niveau 2.",
     );
-    expect(repository.findByName("Pikachu")?.ownedLevel).toBe(2);
+    expect(repository.findByName("Pikachu-Electric")?.ownedLevel).toBe(2);
   });
 
   it("retourne un message d'erreur si le pokémon n'existe pas dans la gateway", () => {
@@ -52,21 +60,21 @@ describe("addPokemonToPokedex", () => {
 
     const result = addPokemonToPokedex(
       // @ts-expect-error: on teste avec un nom invalide
-      "Mew",
+      "Mew-Psychic",
       repository,
       fakeGateway,
     );
 
-    expect(result).toBe("Mew n'existe pas.");
+    expect(result).toBe("Mew-Psychic n'existe pas.");
   });
 
   it("incrémente le niveau à chaque ajout successif", () => {
     const repository = createPokemonRepository();
 
-    addPokemonToPokedex("Dracaufeu", repository, fakeGateway);
-    addPokemonToPokedex("Dracaufeu", repository, fakeGateway);
-    addPokemonToPokedex("Dracaufeu", repository, fakeGateway);
+    addPokemonToPokedex("Dracaufeu-Fire", repository, fakeGateway);
+    addPokemonToPokedex("Dracaufeu-Fire", repository, fakeGateway);
+    addPokemonToPokedex("Dracaufeu-Fire", repository, fakeGateway);
 
-    expect(repository.findByName("Dracaufeu")?.ownedLevel).toBe(3);
+    expect(repository.findByName("Dracaufeu-Fire")?.ownedLevel).toBe(3);
   });
 });
