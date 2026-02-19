@@ -32,7 +32,15 @@ export const pokemons = [
   },
 ] as const;
 
-export type Pokemon = (typeof pokemons)[number];
+type PokemonPsy = {
+  name: string;
+  type: "psy";
+  lvlBonusToOtherPokemon: number;
+  level: number;
+  stats: { hp: 80; attack: 82; defense: 83; speed: 80 };
+};
+
+export type Pokemon = (typeof pokemons)[number] | PokemonPsy;
 export type Stats = Pokemon["stats"];
 export type OwnedPokemon = Pokemon & {
   ownedLevel: number;

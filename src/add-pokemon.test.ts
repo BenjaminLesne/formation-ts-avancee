@@ -77,4 +77,32 @@ describe("addPokemonToPokedex", () => {
 
     expect(repository.findByName("Dracaufeu-Fire")?.ownedLevel).toBe(3);
   });
+
+  it("ajouter un pokémon psy donne +2 niveaux à tous les autres", () => {
+    const repository = createPokemonRepository();
+
+    addPokemonToPokedex("Pikachu-Electric", repository, fakeGateway);
+    addPokemonToPokedex("Dracaufeu-Fire", repository, fakeGateway);
+
+    addPokemonToPokedex(
+      // @ts-expect-error: nom psy pas dans la gateway typée
+      "Mewtwo-Psy",
+      repository,
+      {
+        getAllPokemons: () => [
+          {
+            name: "Mewtwo-Psy",
+            type: "psy",
+            level: 70,
+            lvlBonusToOtherPokemon: 2,
+            stats: { hp: 80, attack: 82, defense: 83, speed: 80 },
+          },
+        ],
+      } satisfies PokemonGateway,
+      { name: "Mewtwo", type: "psy", lvlBonusToOtherPokemon: 2 },
+    );
+
+    expect(repository.findByName("Pikachu-Electric")?.ownedLevel).toBe(3);
+    expect(repository.findByName("Dracaufeu-Fire")?.ownedLevel).toBe(3);
+  });
 });
